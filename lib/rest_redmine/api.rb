@@ -19,6 +19,17 @@ module RestRedmine
       retries ||= 3
       url = get_path(action, id: id)
 
+      if RestRedmine.configuration.api_key.nil?
+        message = "
+          You must set configure first.
+          RestRedmine.configure do |config|
+            config.api_key = '<api_key>'
+            config.server_url = '<server_url>'
+          end
+        "
+        raise RestClient::Exception.new(message)
+      end
+
       response = RestClient::Request.execute(
         :method => method, 
         :url => url, 

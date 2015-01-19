@@ -25,7 +25,13 @@ class RestRedmineTest < Minitest::Test
     assert_equal true, @issue.data.keys.length > 0
   end
 
-  def test_send
+  def test_issue_statuses
     assert_equal Hash, @issue.issue_statuses.class
+  end
+
+  def test_exception
+    message = "You must set configure"
+    e = RestRedmine::Exception.new(message)
+    assert_equal message, e.message
   end
 end

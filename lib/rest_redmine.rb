@@ -1,3 +1,4 @@
+require 'rest_redmine/exception'
 require 'rest_redmine/configuration'
 require 'rest_redmine/api'
 require 'rest-client'
