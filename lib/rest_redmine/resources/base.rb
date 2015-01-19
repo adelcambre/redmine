@@ -15,7 +15,7 @@ module RestRedmine
         end
 
         @model.merge!(self.class::DEFAULT_MODEL)
-        params.merge!(RestRedmine.configuration.resources[@name] || {})
+        @model.merge!(RestRedmine.configuration.resources[@name] || {})
         @model.merge!(params)
 
         self.id = params[:id] if params[:id]
@@ -33,7 +33,7 @@ module RestRedmine
       end
 
       def request(method: :get)
-        response = RestRedmine::API.request(self.class::RESOURCE, id: self.id, data: get_data, method: method)
+        response = RestRedmine::API.request(self.class::RESOURCE, id: self.id, data: get_data(method), method: method)
 
         self.id = response[name.to_s]["id"] if response.respond_to? :has_key?
         # puts response
@@ -51,9 +51,18 @@ module RestRedmine
         response
       end
 
-      def get_data
+      def get_data(method)
+        if method == :put
+          data = model
+          data.each do |key, val|
+            data.delete(key) if val.nil?
+          end
+        else
+          data = model 
+        end
+
         {
-          "#{name}" => model
+          "#{name}" => data
         }
       end
 

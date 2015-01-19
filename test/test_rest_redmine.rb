@@ -47,9 +47,9 @@ class RestRedmineTest < Minitest::Test
   end
 
   def test_get_issue
-    @issue.id = 37
+    @issue.id = 43
     response = @issue.load
-    assert_equal 5, response["issue"]["status"]["id"]
+    assert_equal 1, response["issue"]["status"]["id"]
   end
 
   def test_create_issue
