@@ -5,10 +5,16 @@ module RestRedmine
 
       KEYS = []
 
-      def initialize()
-        KEYS.each do |key|  
-          data[key] = nil
+      def initialize(keys=KEYS)
+        @data = {}
+
+        keys.each do |key|  
+          @data[key] = nil
         end
+      end
+
+      def request(*args)
+        RestRedmine::API.request(*args)
       end
 
       def method_missing(method, *args, &block)  

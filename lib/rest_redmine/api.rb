@@ -1,41 +1,43 @@
-module RestRedmine
-  class API
-    attr_accessor :config
+require 'rest_redmine/resources'
+require 'json'
 
-    def initialize(config = Configuration.new)
-      @config = config
+module RestRedmine
+  module API
+    class << self
+      attr_accessor :config
     end
 
-    def get_path(action, id: nil)
-      url = "#{@config.server_url}/#{action}"
+    def self.get_path(action, id: nil)
+      url = "#{RestRedmine.configuration.server_url}/#{action}"
       url += "/#{id}" if id
       url += ".json"
 
       url
     end
 
-    def send(action, data: {}, id: nil, method: :post)
+    def self.request(action, data: {}, id: nil, method: :post)
       retries ||= 3
-      
+      url = get_path(action, id: id)
+
       response = RestClient::Request.execute(
         :method => method, 
-        :url => get_path(action, id: id), 
+        :url => url, 
         :payload => data, 
         :headers => {
           :accept => :json,
-          "X-Redmine-API-Key" => api_key
+          "X-Redmine-API-Key" => RestRedmine.configuration.api_key
         },
-        :timeout => TIMEOUT,
-        :open_timeout => TIMEOUT
+        :timeout => RestRedmine.configuration.timeout,
+        :open_timeout => RestRedmine.configuration.timeout
       )
     rescue => e
-      RestRedmine.log e
-      RestRedmine.log "REDMINE FAIL: #{action}, #{data}"
+      RestRedmine.log << e
+      RestRedmine.log << "REDMINE FAIL\nurl - #{url}\nparams - #{data}"
       retry unless (retries -= 1).zero?
     else
-      RestRedmine.log "REDMINE SUCCESS: #{action}, #{data}"
+      RestRedmine.log << "REDMINE SUCCESS\nurl - #{url}\nparams - #{data}\nresult - #{response}"
 
-      response
+      JSON.parse(response)
     end
   end
 end

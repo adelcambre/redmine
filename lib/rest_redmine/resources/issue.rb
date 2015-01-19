@@ -1,20 +1,16 @@
 module RestRedmine
   module Resources
     class Issue < Base
-      attr_accessor :data
-
       KEYS = [
-        :project_id, :tracker_id, :status_id, :priority_id:, :subject, :description, :category_id, :parent_issue_id, :custom_fields, :watcher_user_ids, :is_private, :estimated_hours, :done_ratio
+        :project_id, :tracker_id, :status_id, :priority_id, :subject, :description, :category_id, :parent_issue_id, :custom_fields, :watcher_user_ids, :is_private, :estimated_hours, :done_ratio
       ]
 
       def initialize()
-        KEYS.each do |key|  
-          data[key] = nil
-        end
+        super(KEYS)
       end
 
       def issue_statuses
-        RestRedmine::API.send("issue_statuses", method: :get)
+        request("issue_statuses", method: :get)
       end
 
       def update_issue(id, status_id: nil, done_ratio: nil, notes: nil)
@@ -26,7 +22,7 @@ module RestRedmine
         }
         data[:issue][:done_ratio] = done_ratio if done_ratio
 
-        RestRedmine::API.send("issues", id: id, data: data, method: :put)
+        request("issues", id: id, data: data, method: :put)
       end
 
       def new_issue(subject: nil, description: nil)
@@ -48,7 +44,7 @@ module RestRedmine
           }
         }
 
-        RestRedmine::API.send("issues", data: data)
+        request("issues", data: data)
       end
 
       def method_missing(method, *args, &block)  
