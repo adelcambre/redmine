@@ -40,6 +40,16 @@ Redmine::TimeEntry.create(
 
 ```
 
+## Use ssl
+
+
+```
+Redmine::Base.ssl_options = {
+  :verify_mode  => OpenSSL::SSL::VERIFY_PEER
+}
+```
+[Here](http://api.rubyonrails.org/v3.2.1/classes/ActiveResource/Base.html) is more information.
+
 ## Git hook
 
 [Here](https://gist.github.com/topray/526dd9d131bb6f3e3281) is commit-msg gist for git hook.
