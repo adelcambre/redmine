@@ -1,6 +1,6 @@
 module Redmine
   class Configuration
-    attr_accessor :api_key, :server_url, :resources
+    attr_accessor :api_key, :site, :resources
 
     def initialize
       @resources = {}

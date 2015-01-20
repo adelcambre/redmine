@@ -1,17 +1,17 @@
 module Redmine
   class Base < ActiveResource::Base
-    self.site = Redmine.configuration.site
-
     cattr_accessor :static_headers
     self.static_headers = headers
 
     DEFAULTS = {}
 
     def initialize(attributes = {}, persisted = false)
-      attributes.merge!(self.class::DEFAULTS)
-      attributes.merge!(Redmine.configuration.resources[self.class.element_name.to_sym] || {})
-      
-      super(attributes, persisted)
+      attrs = {}
+      attrs.merge!(self.class::DEFAULTS)
+      attrs.merge!(Redmine.configuration.resources[self.class.element_name.to_sym] || {})
+      attrs.merge!(attributes)
+
+      super(attrs, persisted)
     end
 
     def self.headers
@@ -19,6 +19,10 @@ module Redmine
       new_headers["X-Redmine-API-Key"] = Redmine.configuration.api_key
 
       new_headers
+    end
+
+    def encode(options={})
+      send("to_#{self.class.format.extension}", options)
     end
   end
 end

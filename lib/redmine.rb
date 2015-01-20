@@ -6,6 +6,7 @@ require 'redmine/exception'
 require 'redmine/configuration'
 require 'redmine/base'
 require 'redmine/issue'
+require 'redmine/time_entry'
 
 module Redmine
   class << self
@@ -18,6 +19,8 @@ module Redmine
 
   def self.configure
     yield(configuration)
+
+    Redmine::Base.site = configuration.site
   end
 
   def self.create_logger
@@ -29,5 +32,6 @@ module Redmine
     @logger
   end
 
-  create_logger
+  Redmine.create_logger
+  ActiveResource::Base.include_root_in_json = true
 end

@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'redmine'
 require 'yaml'
 
-class RedmineTest < Minitest::Test
+class TimeEntryTest < Minitest::Test
   def setup
     configuration = YAML.load_file('test/config.yml')
 
@@ -11,7 +11,7 @@ class RedmineTest < Minitest::Test
 
     Redmine.configure do |config|
       config.api_key = @api_key
-      config.server_url = @server_url
+      config.site = @site
       config.resources[:issue] = {
         project_id: 1, # nowplay
         tracker_id: 1, # bug
@@ -19,12 +19,20 @@ class RedmineTest < Minitest::Test
         priority_id: 2, # normal
         category_id: 1
       }
+
+      config.resources[:time_entry] = {
+        activity_id: 9 # developer
+      }
     end
 
-    @issue = Redmine::Issue.new
+    @te = Redmine::TimeEntry.new
   end
 
-  def test_configuration
-    assert_equal @api_key, Redmine.configuration.api_key
+  def test_init
+    te = Redmine::TimeEntry.create(
+      issue_id: 55,
+      hours: 4,
+      comments: "하하하"
+    )
   end
 end
