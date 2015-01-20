@@ -6,14 +6,12 @@ In terminal
 
 ```
 gem install redmine
-
 ```
 
 If you wish to bundle, you must add the following line to your Gemfile.
 
 ```
 gem 'redmine'
-
 ```
 
 ## Quick start
