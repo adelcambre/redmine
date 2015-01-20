@@ -1,7 +1,22 @@
 # Redmine
 
-## Quick start
+## Install
 
+In terminal
+
+```
+gem install redmine
+
+```
+
+If you wish to bundle, you must add the following line to your Gemfile.
+
+```
+gem 'redmine'
+
+```
+
+## Quick start
 ```
 Redmine.configure do |config|
   config.api_key = <:api_key>
