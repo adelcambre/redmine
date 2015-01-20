@@ -40,7 +40,7 @@ Redmine::TimeEntry.create(
 
 ```
 
-## Use ssl
+## SSL options
 
 
 ```
