@@ -24,5 +24,13 @@ module Redmine
     def encode(options={})
       send("to_#{self.class.format.extension}", options)
     end
+
+    private
+
+    def self.instantiate_collection(collection, original_params = {}, prefix_options = {})
+      collection = collection[self.collection_name] if collection.is_a? Hash and collection.has_key? self.collection_name
+        
+      super(collection, original_params, prefix_options)
+    end
   end
 end
