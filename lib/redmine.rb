@@ -7,6 +7,7 @@ require 'redmine/configuration'
 require 'redmine/base'
 require 'redmine/issue'
 require 'redmine/time_entry'
+require 'redmine/user'
 
 module Redmine
   class << self
