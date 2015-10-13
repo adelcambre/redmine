@@ -11,5 +11,5 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files -z`.split("\0")
   s.homepage    = 'https://github.com/topray/rest-redmine'
 
-  s.add_dependency('activeresource', '~> 4.0.0', '>= 4.0.0')
+  s.add_dependency('activeresource', '~> 3.0')
 end
